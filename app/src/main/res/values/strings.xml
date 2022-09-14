@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">BancoUTN</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="logo_utn_description">"Logo UTN"</string>
+    <string name="constituir">constituir</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="simular">simular</string>
+    <string name="app_tittle">Banco UTN Santa Fe</string>
+    <string name="solicitud_datos">Para constituir tu plazo fijo necesitamos que nos proveas algunos datos.</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="moneda">Moneda</string>
+    <string name="tasa_nominal_anual">Tasa Nominal Anual</string>
+    <string name="float_value">--.-</string>
+    <string name="tasa_efectiva_anual">Tasa Efectiva Anual</string>
+    <string name="capital_a_invertir">Capital a invertir ($)</string>
+    <string name="con_renovaci_n_autom_tica">Con renovación automática</string>
+    <string name="simulador_plazo_fijo">Simulador Plazo Fijo</string>
+    <string name="plazo">Plazo:</string>
+    <string name="capital">Capital:</string>
+    <string name="intereses_ganados">Intereses ganados: $</string>
+    <string name="monto_total">Monto total: $</string>
+    <string name="monto_total_anual">Monto total anual: $</string>
+    <string name="confirmar">Confirmar</string>
 </resources>
