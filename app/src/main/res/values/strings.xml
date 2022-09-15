@@ -27,8 +27,8 @@
     <string name="simulador_plazo_fijo">Simulador Plazo Fijo</string>
     <string name="plazo">Plazo:</string>
     <string name="capital">Capital:</string>
-    <string name="intereses_ganados">Intereses ganados: $</string>
-    <string name="monto_total">Monto total: $</string>
-    <string name="monto_total_anual">Monto total anual: $</string>
+    <string name="intereses_ganados">Intereses ganados: </string>
+    <string name="monto_total">Monto total: </string>
+    <string name="monto_total_anual">Monto total anual: </string>
     <string name="confirmar">Confirmar</string>
 </resources>

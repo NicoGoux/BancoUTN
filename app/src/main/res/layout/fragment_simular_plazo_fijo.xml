@@ -28,7 +28,7 @@
                 android:layout_height="50dp"
                 android:background="#FFFFFF"
                 android:contentDescription="@string/logo_utn_description"
-                android:src="@drawable/utnsantafe" />
+                android:src="@drawable/logo" />
 
             <TextView
                 android:id="@+id/app_tittle"
@@ -67,7 +67,8 @@
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
                 android:minHeight="48dp"
-                tools:ignore="DuplicateSpeakableTextCheck" />
+                tools:ignore="DuplicateSpeakableTextCheck"
+                android:maxLength="10" />
 
         </LinearLayout>
 
@@ -98,7 +99,8 @@
                 android:hint="@string/float_value"
                 android:inputType="numberDecimal"
                 android:minHeight="48dp"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:maxLength="10" />
 
         </LinearLayout>
 
@@ -121,7 +123,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/tasaNominalField3"
+                android:id="@+id/capitalInvertirField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,18 +131,19 @@
                 android:hint="@string/float_value"
                 android:importantForAutofill="no"
                 android:inputType="numberDecimal"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                android:maxLength="10" />
         </LinearLayout>
 
         <SeekBar
-            android:id="@+id/seekBar3"
+            android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="35dp"
             android:max="12"
-            android:progress="1" />
+            android:progress="0" />
 
         <TextView
             android:id="@+id/diasPlazoFijo"
@@ -215,7 +218,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/confirmarButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"

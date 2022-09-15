@@ -26,6 +26,5 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-//        return super.onSupportNavigateUp();
     }
 }

@@ -28,7 +28,7 @@
                 android:layout_height="50dp"
                 android:background="#FFFFFF"
                 android:contentDescription="@string/logo_utn_description"
-                android:src="@drawable/utnsantafe" />
+                android:src="@drawable/logo" />
 
             <TextView
                 android:id="@+id/app_tittle"
