@@ -15,9 +15,17 @@ import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import ar.com.nicolasgoux.bancoutn.databinding.FragmentConstituirPlazoFijoBinding;
 
@@ -35,8 +43,6 @@ public class ConstituirPlazoFijoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -60,11 +66,33 @@ public class ConstituirPlazoFijoFragment extends Fragment {
         actionBar.setTitle("Constituir Plazo Fijo");
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        // Se deshabilita el boton constituir
-        binding.constituirButton.setEnabled(false);
+        // Se deshabilita o habilita el boton constituir
+        if (getArguments() != null) {
+            Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
+            binding.spinner.setSelection(bundleMoneda.getInt("idMoneda"));
+            binding.constituirButton.setEnabled(true);
+        }
+        else {
+            binding.constituirButton.setEnabled(false);
+        }
 
         // Se añaden eventListener
         binding.simularButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Bundle moneda = new Bundle();
+                moneda.putInt("idMoneda", binding.spinner.getSelectedItemPosition());
+                moneda.putString("nombreMoneda", binding.spinner.getSelectedItem().toString());
+
+
+                Bundle args = new Bundle();
+                args.putBundle("bundleMoneda", moneda);
+                navHost.navigate(R.id.simularPlazoFijoFragment, args);
+            }
+        });
+
+        binding.constituirButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (binding.nameField.getText().length() == 0 || binding.lastNameField.getText().length() == 0) {
@@ -79,7 +107,17 @@ public class ConstituirPlazoFijoFragment extends Fragment {
                             .show();
                     return;
                 } else {
-                    navHost.navigate(R.id.simularPlazoFijoFragment);
+                    new AlertDialog.Builder(view.getContext())
+                            .setCancelable(false).setTitle("Felicitaciones " + binding.nameField.getText().toString() + " " + binding.lastNameField.getText().toString() + "!")
+                            .setMessage("Tu plazo fijo de " + getArguments().getFloat("capitalInvertido") +
+                                    " " + binding.spinner.getSelectedItem().toString().toLowerCase() +
+                                    " por " + getArguments().getInt("plazoInversion") + " dias ha sido constituido")
+                            .setPositiveButton("Piola!", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
                 }
             }
         });

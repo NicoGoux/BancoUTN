@@ -62,6 +62,15 @@ public class SimularPlazoFijoFragment extends Fragment {
         // se desactiva el boton de confirmar
         binding.confirmarButton.setEnabled(false);
 
+        // se modifica el titulo de resultaod segun la moneda utilizada
+        if (getArguments() != null) {
+            String tituloResultado = binding.tituloResultado.getText().toString();
+            Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
+            String moneda = bundleMoneda.getString("nombreMoneda");
+            moneda = moneda.substring(0,1) + moneda.substring(1).toLowerCase();
+            binding.tituloResultado.setText(tituloResultado + " en " + moneda);
+        }
+
         // Se agregan Event Listener
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -107,6 +116,17 @@ public class SimularPlazoFijoFragment extends Fragment {
                 calcular();
             }
         });
+
+        binding.confirmarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putFloat("capitalInvertido", Float.parseFloat(binding.capitalInvertirField.getText().toString()));
+                args.putInt("plazoInversion", binding.seekBar.getProgress()*30);
+                args.putBundle("bundleMoneda",getArguments().getBundle("bundleMoneda"));
+                navHost.navigate(R.id.constituirPlazoFijoFragment, args);
+            }
+        });
     }
 
     private void calcular() {
@@ -127,7 +147,7 @@ public class SimularPlazoFijoFragment extends Fragment {
         float interesGanadoEnPlazo = (interesMensualGanado) * plazo;
         float montoTotal = capital + interesGanadoEnPlazo;
         float montoTotalAnual;
-        if (binding.checkBox.isChecked()) {
+        if (binding.checkBox.isChecked() && plazo <12) {
             // Se tiene en cuenta la reinversion del capital resultante de cada plazo
             float capitalAcumulado = capital;
             float nuevoInteresMensualGanado = interesMensualGanado;

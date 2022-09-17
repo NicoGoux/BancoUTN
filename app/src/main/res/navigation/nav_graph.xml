@@ -21,6 +21,10 @@
         tools:layout="@layout/fragment_simular_plazo_fijo">
         <action
             android:id="@+id/action_simularPlazoFijoFragment_to_constituirPlazoFijoFragment"
-            app:destination="@id/constituirPlazoFijoFragment" />
+            app:destination="@id/constituirPlazoFijoFragment" >
+            <argument
+                android:name="moneda"
+                android:defaultValue="PESOS" />
+        </action>
     </fragment>
 </navigation>
