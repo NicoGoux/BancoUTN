@@ -1,6 +1,13 @@
 package ar.com.nicolasgoux.bancoutn;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,14 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
 
 import ar.com.nicolasgoux.bancoutn.databinding.FragmentSimularPlazoFijoBinding;
 
@@ -34,17 +33,14 @@ public class SimularPlazoFijoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSimularPlazoFijoBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -55,19 +51,31 @@ public class SimularPlazoFijoFragment extends Fragment {
         navHost = NavHostFragment.findNavController(this);
 
         // Modificacion de action bar
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setTitle("Simular Plazo Fijo");
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Simular Plazo Fijo");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // se desactiva el boton de confirmar
         binding.confirmarButton.setEnabled(false);
+
+        // Se restablece el estado de ser posible
+        if (savedInstanceState != null) {
+            binding.tasaNominalField.setText(savedInstanceState.getString("tasaNominal"));
+            binding.tasaEfectivaField.setText(savedInstanceState.getString("tasaEfectiva"));
+            binding.capitalInvertirField.setText(savedInstanceState.getString("capitalInvertir"));
+            binding.seekBar.setProgress(savedInstanceState.getInt("seekbar"));
+            binding.checkBox.setChecked(savedInstanceState.getBoolean("checkbox"));
+            this.calcular();
+        }
 
         // se modifica el titulo de resultaod segun la moneda utilizada
         if (getArguments() != null) {
             String tituloResultado = binding.tituloResultado.getText().toString();
             Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
             String moneda = bundleMoneda.getString("nombreMoneda");
-            moneda = moneda.substring(0,1) + moneda.substring(1).toLowerCase();
+            moneda = moneda.substring(0, 1) + moneda.substring(1).toLowerCase();
             binding.tituloResultado.setText(tituloResultado + " en " + moneda);
         }
 
@@ -122,8 +130,8 @@ public class SimularPlazoFijoFragment extends Fragment {
             public void onClick(View view) {
                 Bundle args = new Bundle();
                 args.putFloat("capitalInvertido", Float.parseFloat(binding.capitalInvertirField.getText().toString()));
-                args.putInt("plazoInversion", binding.seekBar.getProgress()*30);
-                args.putBundle("bundleMoneda",getArguments().getBundle("bundleMoneda"));
+                args.putInt("plazoInversion", binding.seekBar.getProgress() * 30);
+                args.putBundle("bundleMoneda", getArguments().getBundle("bundleMoneda"));
                 navHost.navigate(R.id.constituirPlazoFijoFragment, args);
             }
         });
@@ -147,17 +155,8 @@ public class SimularPlazoFijoFragment extends Fragment {
         float interesGanadoEnPlazo = (interesMensualGanado) * plazo;
         float montoTotal = capital + interesGanadoEnPlazo;
         float montoTotalAnual;
-        if (binding.checkBox.isChecked() && plazo <12) {
-            // Se tiene en cuenta la reinversion del capital resultante de cada plazo
-            float capitalAcumulado = capital;
-            float nuevoInteresMensualGanado = interesMensualGanado;
-            for (int i = 1; i <= 12; i++) {
-                capitalAcumulado += nuevoInteresMensualGanado;
-                if (plazo % i == 0) {
-                    nuevoInteresMensualGanado = ((tasaNominalAnual / 12) / 100) * capitalAcumulado;
-                }
-            }
-            montoTotalAnual = capitalAcumulado;
+        if (binding.checkBox.isChecked() && plazo < 12) {
+            montoTotalAnual = capital + (tasaEfectivaAnual / 100) * capital;
         } else {
             montoTotalAnual = capital + (tasaNominalAnual / 100) * capital;
         }
@@ -171,4 +170,15 @@ public class SimularPlazoFijoFragment extends Fragment {
         binding.confirmarButton.setEnabled(true);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (binding != null) {
+            outState.putString("tasaNominal", binding.tasaNominalField.getText().toString());
+            outState.putString("tasaEfectiva", binding.tasaEfectivaField.getText().toString());
+            outState.putString("capitalInvertir", binding.capitalInvertirField.getText().toString());
+            outState.putInt("seekbar", binding.seekBar.getProgress());
+            outState.putBoolean("checkbox", binding.checkBox.isChecked());
+        }
+    }
 }
