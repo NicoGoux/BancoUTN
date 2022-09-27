@@ -34,8 +34,6 @@ public class SimularPlazoFijoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -43,8 +41,7 @@ public class SimularPlazoFijoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentSimularPlazoFijoBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -62,7 +59,7 @@ public class SimularPlazoFijoFragment extends Fragment {
         // se desactiva el boton de confirmar
         binding.confirmarButton.setEnabled(false);
 
-        // se modifica el titulo de resultaod segun la moneda utilizada
+        // se modifica el titulo de resultado segun la moneda utilizada
         if (getArguments() != null) {
             String tituloResultado = binding.tituloResultado.getText().toString();
             Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
@@ -74,14 +71,10 @@ public class SimularPlazoFijoFragment extends Fragment {
         // Se agregan Event Listener
         TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -124,6 +117,8 @@ public class SimularPlazoFijoFragment extends Fragment {
                 args.putFloat("capitalInvertido", Float.parseFloat(binding.capitalInvertirField.getText().toString()));
                 args.putInt("plazoInversion", binding.seekBar.getProgress()*30);
                 args.putBundle("bundleMoneda",getArguments().getBundle("bundleMoneda"));
+                args.putString("argNombre",getArguments().getString("argNombre"));
+                args.putString("argApellido",getArguments().getString("argApellido"));
                 navHost.navigate(R.id.constituirPlazoFijoFragment, args);
             }
         });
