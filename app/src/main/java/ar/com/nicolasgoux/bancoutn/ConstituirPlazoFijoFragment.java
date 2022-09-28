@@ -13,7 +13,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+
 import androidx.navigation.fragment.NavHostFragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import ar.com.nicolasgoux.bancoutn.databinding.FragmentConstituirPlazoFijoBinding;
 
@@ -65,6 +70,10 @@ public class ConstituirPlazoFijoFragment extends Fragment {
 
         // Se deshabilita o habilita el boton constituir
         if (getArguments() != null) {
+            String argNombre = getArguments().getString("argNombre");
+            binding.nameField.setText(argNombre);
+            String argApellido = getArguments().getString("argApellido");
+            binding.lastNameField.setText(argApellido);
             Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
             binding.spinner.setSelection(bundleMoneda.getInt("idMoneda"));
             binding.constituirButton.setEnabled(true);
@@ -83,6 +92,8 @@ public class ConstituirPlazoFijoFragment extends Fragment {
 
 
                 Bundle args = new Bundle();
+                args.putString("argNombre", binding.nameField.getText().toString());
+                args.putString("argApellido", binding.lastNameField.getText().toString());
                 args.putBundle("bundleMoneda", moneda);
                 navHost.navigate(R.id.simularPlazoFijoFragment, args);
             }

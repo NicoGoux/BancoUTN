@@ -60,6 +60,7 @@ public class SimularPlazoFijoFragment extends Fragment {
         // se desactiva el boton de confirmar
         binding.confirmarButton.setEnabled(false);
 
+
         // Se restablece el estado de ser posible
         if (savedInstanceState != null) {
             binding.tasaNominalField.setText(savedInstanceState.getString("tasaNominal"));
@@ -82,14 +83,10 @@ public class SimularPlazoFijoFragment extends Fragment {
         // Se agregan Event Listener
         TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -130,8 +127,12 @@ public class SimularPlazoFijoFragment extends Fragment {
             public void onClick(View view) {
                 Bundle args = new Bundle();
                 args.putFloat("capitalInvertido", Float.parseFloat(binding.capitalInvertirField.getText().toString()));
-                args.putInt("plazoInversion", binding.seekBar.getProgress() * 30);
-                args.putBundle("bundleMoneda", getArguments().getBundle("bundleMoneda"));
+
+                args.putInt("plazoInversion", binding.seekBar.getProgress()*30);
+                args.putBundle("bundleMoneda",getArguments().getBundle("bundleMoneda"));
+                args.putString("argNombre",getArguments().getString("argNombre"));
+                args.putString("argApellido",getArguments().getString("argApellido"));
+
                 navHost.navigate(R.id.constituirPlazoFijoFragment, args);
             }
         });
