@@ -2,6 +2,9 @@ package ar.com.nicolasgoux.bancoutn;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +39,7 @@ public class ConstituirPlazoFijoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentConstituirPlazoFijoBinding.inflate(inflater, container, false);
@@ -51,9 +54,19 @@ public class ConstituirPlazoFijoFragment extends Fragment {
         navHost = NavHostFragment.findNavController(this);
 
         // Modificacion del actionBar
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setTitle("Constituir Plazo Fijo");
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Constituir Plazo Fijo");
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+
+
+        // Se restablece el estado de ser posible
+        if (savedInstanceState != null) {
+            binding.nameField.setText(savedInstanceState.getString("nombre"));
+            binding.lastNameField.setText(savedInstanceState.getString("apellido"));
+            binding.spinner.setSelection(savedInstanceState.getInt("spinerId"));
+        }
 
         // Se deshabilita o habilita el boton constituir
         if (getArguments() != null) {
@@ -64,8 +77,7 @@ public class ConstituirPlazoFijoFragment extends Fragment {
             Bundle bundleMoneda = getArguments().getBundle("bundleMoneda");
             binding.spinner.setSelection(bundleMoneda.getInt("idMoneda"));
             binding.constituirButton.setEnabled(true);
-        }
-        else {
+        } else {
             binding.constituirButton.setEnabled(false);
         }
 
@@ -100,21 +112,33 @@ public class ConstituirPlazoFijoFragment extends Fragment {
                                 }
                             })
                             .show();
-                    return;
                 } else {
-                    new AlertDialog.Builder(view.getContext())
-                            .setCancelable(false).setTitle("Felicitaciones " + binding.nameField.getText().toString() + " " + binding.lastNameField.getText().toString() + "!")
-                            .setMessage("Tu plazo fijo de " + getArguments().getFloat("capitalInvertido") +
-                                    " " + binding.spinner.getSelectedItem().toString().toLowerCase() +
-                                    " por " + getArguments().getInt("plazoInversion") + " dias ha sido constituido")
-                            .setPositiveButton("Piola!", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                    if (getArguments() != null) {
+                        new AlertDialog.Builder(view.getContext())
+                                .setCancelable(false).setTitle("Felicitaciones " + binding.nameField.getText().toString() + " " + binding.lastNameField.getText().toString() + "!")
+                                .setMessage("Tu plazo fijo de " + getArguments().getFloat("capitalInvertido") +
+                                        " " + binding.spinner.getSelectedItem().toString().toLowerCase() +
+                                        " por " + getArguments().getInt("plazoInversion") + " dias ha sido constituido")
+                                .setPositiveButton("Piola!", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
                 }
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (binding != null) {
+            outState.putString("nombre", binding.nameField.getText().toString());
+            outState.putString("apellido", binding.lastNameField.getText().toString());
+            outState.putInt("spinerId", binding.spinner.getSelectedItemPosition());
+        }
+
     }
 }
